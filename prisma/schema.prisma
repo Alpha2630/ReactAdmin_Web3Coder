@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Event {
@@ -13,6 +14,8 @@ model Event {
   startDate   DateTime
   endDate     DateTime
   location    String
+  category    String?
+  image       String?
 
   sessions    Session[]
 }
@@ -43,12 +46,13 @@ model Room {
 }
 
 model Speaker {
-  id        Int    @id @default(autoincrement())
-  name      String
-  bio       String?
-  photo     String?
+  id         Int      @id @default(autoincrement())
+  name       String
+  bio        String?
+  photo      String?
+  expertise  String[]
 
-  sessions  SessionSpeaker[]
+  sessions   SessionSpeaker[]
 }
 
 model SessionSpeaker {

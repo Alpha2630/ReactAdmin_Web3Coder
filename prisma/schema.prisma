@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  location    String
+
+  sessions    Session[]
+}
+
+model Session {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  startTime   DateTime
+  endTime     DateTime
+  capacity    Int?
+
+  eventId     Int
+  roomId      Int
+
+  event       Event @relation(fields: [eventId], references: [id])
+  room        Room  @relation(fields: [roomId], references: [id])
+
+  speakers    SessionSpeaker[]
+  questions   Question[]
+}
+
+model Room {
+  id       Int @id @default(autoincrement())
+  name     String
+
+  sessions Session[]
+}
+
+model Speaker {
+  id        Int    @id @default(autoincrement())
+  name      String
+  bio       String?
+  photo     String?
+
+  sessions  SessionSpeaker[]
+}
+
+model SessionSpeaker {
+  sessionId Int
+  speakerId Int
+
+  session Session @relation(fields: [sessionId], references: [id])
+  speaker Speaker @relation(fields: [speakerId], references: [id])
+
+  @@id([sessionId, speakerId])
+}
+
+model Question {
+  id        Int      @id @default(autoincrement())
+  content   String
+  author    String?
+  upvotes   Int      @default(0)
+  createdAt DateTime @default(now())
+
+  sessionId Int
+  session   Session @relation(fields: [sessionId], references: [id])
+}

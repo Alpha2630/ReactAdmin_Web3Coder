@@ -1,14 +1,36 @@
+import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
+
 export async function GET() {
-  return Response.json({
-    message: "Get all rooms",
-  });
+  try {
+    const rooms = await prisma.room.findMany({
+      include: { sessions: true },
+    });
+    return NextResponse.json(rooms);
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to fetch rooms" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(req: Request) {
-  const body = await req.json();
-
-  return Response.json({
-    message: "Create room",
-    body,
-  });
+  try {
+    const body = await req.json();
+    const { name } = body;
+    if (!name) {
+      return NextResponse.json(
+        { message: "Name is required" },
+        { status: 400 }
+      );
+    }
+    const room = await prisma.room.create({ data: { name } });
+    return NextResponse.json(room, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to create room" },
+      { status: 500 }
+    );
+  }
 }

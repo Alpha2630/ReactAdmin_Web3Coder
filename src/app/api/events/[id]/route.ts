@@ -1,19 +1,18 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-// helper
 function parseId(id: string) {
   const num = Number(id);
   return isNaN(num) ? null : num;
 }
 
-// GET ONE EVENT
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseId(params.id);
+    const { id: idParam } = await params;
+    const id = parseId(idParam);
 
     if (!id) {
       return NextResponse.json(
@@ -28,7 +27,6 @@ export async function GET(
         sessions: {
           include: {
             speakers: true,
-            room: true,
             questions: true,
           },
         },
@@ -44,6 +42,7 @@ export async function GET(
 
     return NextResponse.json(event);
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { message: "Failed to fetch event" },
       { status: 500 }
@@ -51,13 +50,13 @@ export async function GET(
   }
 }
 
-// UPDATE EVENT
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseId(params.id);
+    const { id: idParam } = await params;
+    const id = parseId(idParam);
 
     if (!id) {
       return NextResponse.json(
@@ -73,18 +72,18 @@ export async function PUT(
       data: {
         ...(body.title && { title: body.title }),
         ...(body.description && { description: body.description }),
-        ...(body.startDate && {
-          startDate: new Date(body.startDate),
-        }),
-        ...(body.endDate && {
-          endDate: new Date(body.endDate),
-        }),
+        ...(body.startDate && { startDate: new Date(body.startDate) }),
+        ...(body.endDate && { endDate: new Date(body.endDate) }),
         ...(body.location && { location: body.location }),
+        ...(body.category && { category: body.category }),
+        ...(body.image && { image: body.image }),
       },
     });
 
     return NextResponse.json(event);
   } catch (error: any) {
+    console.error(error);
+
     if (error.code === "P2025") {
       return NextResponse.json(
         { message: "Event not found" },
@@ -99,13 +98,13 @@ export async function PUT(
   }
 }
 
-// DELETE EVENT
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseId(params.id);
+    const { id: idParam } = await params;
+    const id = parseId(idParam);
 
     if (!id) {
       return NextResponse.json(
@@ -122,6 +121,8 @@ export async function DELETE(
       message: "Event deleted successfully",
     });
   } catch (error: any) {
+    console.error(error);
+
     if (error.code === "P2025") {
       return NextResponse.json(
         { message: "Event not found" },

@@ -24,8 +24,10 @@ model Session {
   id          Int      @id @default(autoincrement())
   title       String
   description String?
+
   startTime   DateTime
   endTime     DateTime
+
   capacity    Int?
 
   eventId     Int
@@ -46,7 +48,7 @@ model Room {
 }
 
 model Speaker {
-  id         Int      @id @default(autoincrement())
+  id         String   @id
   name       String
   bio        String?
   photo      String?
@@ -57,7 +59,7 @@ model Speaker {
 
 model SessionSpeaker {
   sessionId Int
-  speakerId Int
+  speakerId String
 
   session Session @relation(fields: [sessionId], references: [id])
   speaker Speaker @relation(fields: [speakerId], references: [id])

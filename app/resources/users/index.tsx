@@ -1,3 +1,4 @@
+// app/resources/users/index.tsx
 'use client';
 
 import { List, Datagrid, TextField, EmailField, Edit, SimpleForm, TextInput, Create } from 'react-admin';
@@ -5,9 +6,8 @@ import { List, Datagrid, TextField, EmailField, Edit, SimpleForm, TextInput, Cre
 export const UserList = () => (
   <List>
     <Datagrid rowClick="edit">
-      <TextField source="name" label="Nom" />
+      <TextField source="id" label="ID" />
       <EmailField source="email" label="Email" />
-      <TextField source="role" label="Rôle" />
     </Datagrid>
   </List>
 );
@@ -15,9 +15,8 @@ export const UserList = () => (
 export const UserEdit = () => (
   <Edit>
     <SimpleForm>
-      <TextInput source="name" label="Nom" />
       <TextInput source="email" label="Email" />
-      <TextInput source="role" label="Rôle" />
+      <TextInput source="password_hash" label="Mot de passe" type="password" />
     </SimpleForm>
   </Edit>
 );
@@ -25,10 +24,8 @@ export const UserEdit = () => (
 export const UserCreate = () => (
   <Create>
     <SimpleForm>
-      <TextInput source="name" label="Nom" />
-      <TextInput source="email" label="Email" />
-      <TextInput source="password" label="Mot de passe" type="password" />
-      <TextInput source="role" label="Rôle" defaultValue="USER" />
+      <TextInput source="email" label="Email" required />
+      <TextInput source="password_hash" label="Mot de passe" type="password" required />
     </SimpleForm>
   </Create>
 );

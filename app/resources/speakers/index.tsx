@@ -1,13 +1,14 @@
+// app/resources/speakers/index.tsx
 'use client';
 
-import { List, Datagrid, TextField, EmailField, Edit, SimpleForm, TextInput, Create } from 'react-admin';
+import { List, Datagrid, TextField, Edit, SimpleForm, TextInput, Create } from 'react-admin';
 
 export const SpeakerList = () => (
   <List>
     <Datagrid rowClick="edit">
-      <TextField source="firstName" label="Prénom" />
-      <TextField source="lastName" label="Nom" />
-      <EmailField source="email" label="Email" />
+      <TextField source="id" label="ID" />
+      <TextField source="name" label="Nom" />
+      <TextField source="bio" label="Bio" />
     </Datagrid>
   </List>
 );
@@ -15,9 +16,10 @@ export const SpeakerList = () => (
 export const SpeakerEdit = () => (
   <Edit>
     <SimpleForm>
-      <TextInput source="firstName" label="Prénom" />
-      <TextInput source="lastName" label="Nom" />
-      <TextInput source="email" label="Email" />
+      <TextInput source="id" label="ID" />
+      <TextInput source="name" label="Nom" />
+      <TextInput source="bio" label="Bio" multiline rows={3} />
+      <TextInput source="photo" label="Photo URL" />
     </SimpleForm>
   </Edit>
 );
@@ -25,9 +27,10 @@ export const SpeakerEdit = () => (
 export const SpeakerCreate = () => (
   <Create>
     <SimpleForm>
-      <TextInput source="firstName" label="Prénom" />
-      <TextInput source="lastName" label="Nom" />
-      <TextInput source="email" label="Email" />
+      <TextInput source="id" label="ID" required />
+      <TextInput source="name" label="Nom" required />
+      <TextInput source="bio" label="Bio" multiline rows={3} />
+      <TextInput source="photo" label="Photo URL" />
     </SimpleForm>
   </Create>
 );

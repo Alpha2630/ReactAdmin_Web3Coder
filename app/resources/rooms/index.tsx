@@ -1,3 +1,4 @@
+// app/resources/rooms/index.tsx
 'use client';
 
 import { List, Datagrid, TextField, Edit, SimpleForm, TextInput, Create } from 'react-admin';
@@ -5,8 +6,8 @@ import { List, Datagrid, TextField, Edit, SimpleForm, TextInput, Create } from '
 export const RoomList = () => (
   <List>
     <Datagrid rowClick="edit">
+      <TextField source="id" label="ID" />
       <TextField source="name" label="Nom" />
-      <TextField source="platformNumber" label="Plateforme" />
     </Datagrid>
   </List>
 );
@@ -15,7 +16,6 @@ export const RoomEdit = () => (
   <Edit>
     <SimpleForm>
       <TextInput source="name" label="Nom" />
-      <TextInput source="platformNumber" label="Numéro de plateforme" />
     </SimpleForm>
   </Edit>
 );
@@ -23,8 +23,7 @@ export const RoomEdit = () => (
 export const RoomCreate = () => (
   <Create>
     <SimpleForm>
-      <TextInput source="name" label="Nom" />
-      <TextInput source="platformNumber" label="Numéro de plateforme" />
+      <TextInput source="name" label="Nom" required />
     </SimpleForm>
   </Create>
 );

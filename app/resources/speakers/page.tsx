@@ -1,4 +1,4 @@
-// app/resources/speakers/index.tsx
+// app/resources/speakers/page.tsx
 'use client';
 
 import { List, Datagrid, TextField, Edit, SimpleForm, TextInput, Create } from 'react-admin';

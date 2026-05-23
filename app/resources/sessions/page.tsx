@@ -1,4 +1,4 @@
-// app/resources/sessions/index.tsx
+// app/resources/sessions/page.tsx
 'use client';
 
 import { List, Datagrid, TextField, DateField, Edit, SimpleForm, TextInput, Create, NumberInput } from 'react-admin';

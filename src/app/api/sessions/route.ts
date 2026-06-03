@@ -6,7 +6,10 @@ export async function GET(req: NextRequest) {
     const sessions = await prisma.session.findMany({
       include: { event: true, room: true, speakers: { include: { speaker: true } } },
     });
-    return NextResponse.json(sessions);
+    const response = NextResponse.json(sessions);
+    response.headers.set('X-Total-Count', String(sessions.length));
+    response.headers.set('Access-Control-Expose-Headers', 'X-Total-Count');
+    return response;
   } catch {
     return NextResponse.json({ error: "Failed to fetch sessions" }, { status: 500 });
   }

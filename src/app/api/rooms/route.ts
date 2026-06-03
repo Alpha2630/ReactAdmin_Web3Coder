@@ -6,7 +6,10 @@ export async function GET() {
     const rooms = await prisma.room.findMany({
       include: { sessions: true },
     });
-    return NextResponse.json(rooms);
+    const response = NextResponse.json(rooms);
+    response.headers.set('X-Total-Count', String(rooms.length));
+    response.headers.set('Access-Control-Expose-Headers', 'X-Total-Count');
+    return response;
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to fetch rooms" },

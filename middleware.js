@@ -7,8 +7,8 @@ const COOKIE_NAME = "eventsync_session";
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // 🔥 Exception pour la page de login
-  if (pathname === "/admin/login") {
+  // 🔥 Exception pour la page de login (supporte aussi trailing slash)
+  if (pathname === "/admin/login" || pathname === "/admin/login/") {
     return NextResponse.next();
   }
 

@@ -113,9 +113,19 @@ export async function DELETE(
       );
     }
 
-    await prisma.event.delete({
-      where: { id },
+    const sessions = await prisma.session.findMany({
+      where: { eventId: id },
+      select: { id: true },
     });
+
+    const sessionIds = sessions.map((session: { id: number }) => session.id);
+
+    await prisma.$transaction([
+      prisma.question.deleteMany({ where: { sessionId: { in: sessionIds } } }),
+      prisma.sessionSpeaker.deleteMany({ where: { sessionId: { in: sessionIds } } }),
+      prisma.session.deleteMany({ where: { eventId: id } }),
+      prisma.event.delete({ where: { id } }),
+    ]);
 
     return NextResponse.json({
       message: "Event deleted successfully",

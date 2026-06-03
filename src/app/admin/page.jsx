@@ -1,22 +1,30 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import AdminClient from './AdminClient';
 
-export default function AdminDashboard() {
+export default function AdminPage() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
     async function checkAuth() {
       try {
-        const res = await fetch("/api/auth/session");
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        setUser(data.user);
+        const res = await fetch('/api/auth/session');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated) {
+            setAuthenticated(true);
+          } else {
+            router.replace('/admin/login');
+          }
+        } else {
+          router.replace('/admin/login');
+        }
       } catch {
-        router.replace("/admin/login");
+        router.replace('/admin/login');
       } finally {
         setLoading(false);
       }
@@ -24,21 +32,13 @@ export default function AdminDashboard() {
     checkAuth();
   }, [router]);
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading) {
+    return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Chargement...</div>;
+  }
 
-  return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Tableau de bord administrateur</h1>
-      <p>Bienvenue, {user?.email || "Admin"} !</p>
-      <p>Vous êtes bien connecté.</p>
-      <button
-        onClick={async () => {
-          await fetch("/api/auth/logout", { method: "POST" });
-          router.push("/admin/login");
-        }}
-      >
-        Se déconnecter
-      </button>
-    </div>
-  );
+  if (!authenticated) {
+    return null;
+  }
+
+  return <AdminClient />;
 }

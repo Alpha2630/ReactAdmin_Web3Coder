@@ -13,7 +13,10 @@ export async function GET() {
         },
       },
     });
-    return NextResponse.json(events);
+    const response = NextResponse.json(events);
+    response.headers.set('X-Total-Count', String(events.length));
+    response.headers.set('Access-Control-Expose-Headers', 'X-Total-Count');
+    return response;
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to fetch events" },

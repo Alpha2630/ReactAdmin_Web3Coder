@@ -12,7 +12,10 @@ export async function GET() {
         },
       },
     });
-    return NextResponse.json(speakers);
+    const response = NextResponse.json(speakers);
+    response.headers.set('X-Total-Count', String(speakers.length));
+    response.headers.set('Access-Control-Expose-Headers', 'X-Total-Count');
+    return response;
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to fetch speakers" },

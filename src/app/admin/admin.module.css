@@ -1,0 +1,32 @@
+.admin-root{min-height:100vh;background:#0f172a;color:#f8fafc;font-family:Inter, Roboto, Arial, sans-serif}
+
+/* Layout: leave space for fixed sidebar (280px) */
+.ra-root{margin-left:280px;padding:28px}
+
+.admin-loading{min-height:100vh;display:grid;place-items:center;color:#e2e8f0;font-size:18px}
+
+/* Make react-admin panels blend with the dark theme */
+.ra-root .MuiPaper-root{background:rgba(15,23,42,0.55);color:#e6eef8}
+.ra-root .MuiTableCell-root,.ra-root .RaDatagrid-headerCell{color:#cbd5e1}
+.ra-root .RaDatagrid-rowEven{background:transparent}
+.ra-root .RaDatagrid-rowOdd{background:rgba(255,255,255,0.01)}
+
+/* Inputs & textareas */
+.ra-root input,.ra-root textarea,.ra-root .MuiInputBase-root{background:rgba(255,255,255,0.03);color:#e6eef8;border:1px solid rgba(255,255,255,0.06);border-radius:8px}
+.ra-root label{color:#94a3b8}
+
+/* Buttons */
+.ra-root .MuiButton-root{border-radius:8px;text-transform:none}
+.ra-root .MuiButton-containedPrimary{background:linear-gradient(90deg,#7c3aed,#06b6d4);color:#fff}
+.ra-root .MuiButton-outlined{border-color:rgba(255,255,255,0.06);color:#e6eef8}
+
+/* Toolbar / App bar */
+.ra-root .RaAppBar, .ra-root .MuiToolbar-root{background:transparent;color:#f8fafc}
+
+/* Improve form spacing */
+.ra-root .RaSimpleForm .MuiInputBase-root{margin-bottom:12px}
+
+/* Small responsive tweak */
+@media (max-width: 900px){
+	.ra-root{margin-left:0;padding:12px}
+}

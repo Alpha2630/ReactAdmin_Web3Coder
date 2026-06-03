@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
@@ -9,25 +9,6 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [checking, setChecking] = useState(true);
-
-  // Redirige vers /admin si déjà connecté
-  useEffect(() => {
-    async function checkSession() {
-      try {
-        const res = await fetch("/api/auth/session");
-        const data = await res.json();
-        if (data.authenticated) {
-          router.replace("/admin");
-        }
-      } catch {
-        // Pas de session, on reste sur /login
-      } finally {
-        setChecking(false);
-      }
-    }
-    checkSession();
-  }, [router]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -53,26 +34,13 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/admin");
+      window.location.assign("/admin");
     } catch {
-      setError("Une erreur est survenue. Veuillez réessayer.");
+      setError("Une erreur est survenue. Veuillez reessayer.");
     } finally {
       setLoading(false);
     }
   };
-
-  // Pendant la vérification de session → écran vide avec spinner
-  if (checking) {
-    return (
-      <div className={styles.loginRoot}>
-        <div className={styles.loginBg} aria-hidden="true">
-          <div className={styles.loginBgGrid} />
-          <div className={styles.loginBgAccent} />
-        </div>
-        <span className={styles.loginSpinner} aria-label="Chargement…" />
-      </div>
-    );
-  }
 
   return (
     <div className={styles.loginRoot}>
@@ -82,7 +50,6 @@ export default function LoginPage() {
       </div>
 
       <main className={styles.loginMain}>
-        {/* Brand */}
         <div className={styles.loginBrand}>
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
             <rect width="32" height="32" rx="8" fill="#6366f1" />
@@ -97,12 +64,11 @@ export default function LoginPage() {
           <span className={styles.loginBrandName}>EventSync</span>
         </div>
 
-        {/* Card */}
         <div className={styles.loginCard}>
           <div className={styles.loginCardHeader}>
             <h1 className={styles.loginTitle}>Espace organisateur</h1>
             <p className={styles.loginSubtitle}>
-              Connectez-vous pour gérer vos événements
+              Connectez-vous pour gerer vos evenements
             </p>
           </div>
 
@@ -136,7 +102,7 @@ export default function LoginPage() {
                 autoComplete="current-password"
                 required
                 className={styles.loginInput}
-                placeholder="••••••••"
+                placeholder="********"
                 value={formData.password}
                 onChange={handleChange}
                 disabled={loading}
@@ -160,7 +126,7 @@ export default function LoginPage() {
               disabled={loading || !formData.email || !formData.password}
             >
               {loading ? (
-                <span className={styles.loginSpinner} aria-label="Chargement…" />
+                <span className={styles.loginSpinner} aria-label="Chargement..." />
               ) : (
                 "Se connecter"
               )}
@@ -169,10 +135,10 @@ export default function LoginPage() {
         </div>
 
         <p className={styles.loginFooter}>
-          Accès réservé aux organisateurs.{" "}
-         <a href="http://localhost:3001/accueil" className={styles.loginFooterLink}>
-              Retour à l'accueil
-         </a>
+          Acces reserve aux organisateurs.{" "}
+          <a href="http://localhost:3001/accueil" className={styles.loginFooterLink}>
+            Retour a l&apos;accueil
+          </a>
         </p>
       </main>
     </div>
